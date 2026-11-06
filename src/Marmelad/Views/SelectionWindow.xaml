@@ -1,0 +1,35 @@
+<Window x:Class="Marmelad.Views.SelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Мармеладность: выделение области"
+        WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True"
+        Background="Black" Cursor="Cross" UseLayoutRounding="True"
+        FontFamily="{StaticResource Font.Ui}">
+    <Grid>
+        <Image x:Name="Shot" Stretch="Fill" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+
+        <Path Fill="#8A000000">
+            <Path.Data>
+                <GeometryGroup FillRule="EvenOdd">
+                    <RectangleGeometry x:Name="DimArea" />
+                    <RectangleGeometry x:Name="DimHole" />
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+
+        <Canvas>
+            <Border x:Name="Frame" BorderThickness="2" CornerRadius="3" Visibility="Collapsed"
+                    BorderBrush="{DynamicResource Brush.Accent}" />
+        </Canvas>
+
+        <Border x:Name="Hint" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,28,0,0"
+                Padding="16,9" CornerRadius="10" IsHitTestVisible="False"
+                Background="{DynamicResource Brush.Card}"
+                BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1">
+            <TextBlock FontSize="13.5" Foreground="{DynamicResource Brush.Text}">
+                <Run Text="Выделите область с текстом" />
+                <Run Text="  ·  Esc — отмена" Foreground="{DynamicResource Brush.Muted}" />
+            </TextBlock>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,35 @@
+# Builds a standalone exe and publishes a release for every pushed version tag, for example v1.0.1.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        shell: pwsh
+        run: ./publish.ps1 -SelfContained
+
+      - name: Publish the release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # GitHub strips non-Latin letters from asset names, so the file gets a Latin name.
+          Copy-Item (Get-ChildItem dist/*.exe | Select-Object -First 1).FullName Marmeladnost.exe
+          gh release create $env:GITHUB_REF_NAME Marmeladnost.exe `
+            --title "Мармеладность $env:GITHUB_REF_NAME" `
+            --notes-file .github/RELEASE_NOTES.md
